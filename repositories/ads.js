@@ -4,7 +4,7 @@ const Advertisement = require("../model/advertisement");
 
 //devuelve el listado de productos. LLama a mongoose y devuelve los anuncios
 function all(minPrice, maxPrice) {
-    
+    return Advertisement.find({ price: {$gte: minPrice, $lte: maxPrice }}).exec();
 }
 
 
