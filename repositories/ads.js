@@ -1,5 +1,4 @@
 //Es un archivo que tiene funciones que se van a conectar con la DB
-const filter = require("jade/lib/filters");
 const Advertisement = require("../model/advertisement");
 
 
