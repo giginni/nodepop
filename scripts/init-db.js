@@ -5,7 +5,31 @@ const Advertisement = require('../model/advertisement');
 const data = require('./data');
 
 
+function yesOrNoQuestion(text) {
+  return new Promise((resolve, reject) => {
+    const interphase = readline.createInterphase({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    interphase.question(text, (answer) => {
+      interphase.close();
+      if (answer.toLowerCase() === "si") {
+        resolve(true);
+        return;
+      }
+      resolve(false);
+    });
+  });
+}
+
+
 async function main() {
+  const continue = await yesOrNoQuestion("¿Esta seguro que desea eliminar la base de datos? [n]");
+  if (!continue) {
+    process.exit();
+  }
+
+  
   await mongoose.connect('mongodb://127.0.0.1:27017/nodepop');
   await Advertisement.collection.drop().catch(() => {});  //limpia la bd para inicializarla
   await Advertisement.ensureIndexes(); //me asegura de crear los indices
