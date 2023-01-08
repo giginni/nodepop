@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 const Advertisement = require('../model/advertisement');
 const data = require('./data');
-const images = require('../public/images/anuncios');
 
 
 async function main() {
