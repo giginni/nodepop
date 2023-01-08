@@ -1,6 +1,7 @@
 const express = require('express');
-const { listedItems, findById } = require('../repositories/ads');
+const { listedItems, findById, createNewAd } = require('../repositories/ads');
 const router = express.Router();
+const myTags = require('../model/tags');
 
 /* GET home page. */
 router.get('/list', async (req, res, next) => {
@@ -44,6 +45,38 @@ router.get('/:id', async (req, res, next) => {
     }  catch(error) {
         next(error);
     }  
+})
+
+
+router.post('/', async (req, res, next) => {
+  try {
+    const {name, price, sale, tags, photo} = req.body;
+    let error;
+    if (!name) {
+      error = 'Nombre inválido';
+    }
+    if (typeof price != 'number') {
+      error = 'Precio inválido';
+    }
+    if (sale !== true && sale !== false) {
+      error = 'Venta inválida';
+    }
+    if (!Array.isArray(tags) || !tags.every(tag => myTags.includes(tag))) {
+      error = 'Tag inválido';
+    }
+    if (!photo) {
+      error = 'Foto inválida';
+    }
+    if (error) {
+      res.status(400).json({error});
+      next();
+    }
+
+    const ad = await createNewAd(name, price, sale, tags, photo)
+    res.json(ad);
+  } catch(err) {
+    next(err);
+  }
 })
 
 module.exports = router;

@@ -6,7 +6,6 @@ const Advertisement = require("../model/advertisement");
 //devuelve el listado de productos. LLama a mongoose y devuelve los anuncios
 function listedItems(name, tag, isSale, fixedPrice, minPrice, maxPrice, start, limit, sort) {
     const filters = {};
-
     if (name) {
         filters.name = new RegExp(`^${name}`, 'i');
     }
@@ -37,7 +36,15 @@ function findById(id) {
 }
 
 
+function createNewAd(name, price, sale, tags, photo) {
+    const ad = new Advertisement({ name, price, sale, tags, photo });
+    return ad.save();
+}
+
+
+
 module.exports = {
     listedItems, 
-    findById
+    findById,
+    createNewAd
 }
